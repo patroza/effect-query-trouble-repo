@@ -9,7 +9,6 @@ export default function GetAllTodos() {
   const { data: todos, isLoading } = useQuery({
     queryKey: ["Todos", "Get"],
     queryFn: async () => {
-      console.log("fetching fotos....")
       return await pipe(
         TodoCtx,
         Effect.flatMap((ctx) => ctx.getAll()),
