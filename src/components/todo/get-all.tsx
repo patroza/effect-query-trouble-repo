@@ -1,9 +1,10 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { pipe, Effect, Runtime, Console } from "effect";
 import * as Todos from "@/services/todo.service";
 import { TodoCtx } from "@/contexts/todo.ctx";
 
 export default function GetAllTodos() {
+  const queryClient = useQueryClient();
   // get todos
   const { data: todos, isLoading } = useQuery({
     queryKey: ["Todos", "Get"],
@@ -32,6 +33,7 @@ export default function GetAllTodos() {
         Runtime.runPromise(Todos.TodoRuntime)
       );
     },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['Todos', 'Get'] }),
   });
 
   const onTodoToggle = (id: string) => {
